@@ -10,8 +10,8 @@ function checkForOpenFiles(callback) {
   console.log( `checking you've not left anything open on ${windowsPartition}...`)
   const ls = spawn( 'lsof', [ windowsPartition  ] )
 
-  ls.stdout.on( 'data', data => console.log( `OOPS!!!! These are still open:\n ${data}` ) )
-  ls.stderr.on( 'data', data => console.log( `Some error happened:\n ${data}` ) )
+  ls.stdout.on( 'data', data => console.log( `\nOOPS!!!! These are still open:\n ${data}` ) )
+  ls.stderr.on( 'data', data => console.log( `\nSome error happened:\n ${data}` ) )
 
   /*
    * strangely for lsof, return code 1 means "i didn't find anything". To not find anything is an error
@@ -20,19 +20,19 @@ function checkForOpenFiles(callback) {
   ls.on( 'close', exitCode => callback(exitCode))
 }
 
-function doneChecking() {
+function flow() {
 
   checkForOpenFiles( exitCode => (
     exitCode === 1? (
-      console.log(`Nothing is open, starting up...`)
+        console.log(`\nNothing is open, starting up...`)
       , spawn( 'open', ['-a',  parallelsVM ] )
     ):(
-      console.log("Close the files, checking again....")
-      , doneChecking()
+        console.log("\nClose the files, checking again....\n")
+      , flow()
     )
 
   ))
 
 }
 
-doneChecking()
+flow()
