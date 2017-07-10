@@ -22,18 +22,16 @@ function checkForOpenFiles(callback) {
 
 function doneChecking() {
 
-  checkForOpenFiles( exitCode => {
-    if (exitCode === 1) {
+  checkForOpenFiles( exitCode => (
+    exitCode === 1? (
       console.log(`Nothing is open, starting up...`)
-      spawn( 'open', ['-a',  parallelsVM ] )
-    }
-
-    if (exitCode === 0) {
+      , spawn( 'open', ['-a',  parallelsVM ] )
+    ):(
       console.log("Close the files, checking again....")
-      doneChecking()
-    }
+      , doneChecking()
+    )
 
-  })
+  ))
 
 }
 
