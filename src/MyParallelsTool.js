@@ -3,7 +3,12 @@
 'use strict'
 
 const windowsPartition = `/Volumes/Untitled` 
-const parallelsVM = `/Users/twoode/CODE/VMs/Parallels/My Boot Camp.pvm/My Boot Camp.app`
+const os = require('os')
+const hostname = os.hostname()
+const parallelsVM = hostname==='typhoon-macos'
+  ?  `/Users/twoode/CODE/VMs/Parallels/typhoon-macos/My Boot Camp.pvm/My Boot Camp.app`
+  : `/Users/twoode/CODE/VMs/Parallels/My Boot Camp.pvm/My Boot Camp.app`
+//const parallelsVM = `/Users/twoode/CODE/VMs/Parallels/My Boot Camp.pvm/My Boot Camp.app`
 const spawn = require( 'child_process' ).spawn
 
 function checkForOpenFiles(callback) {
